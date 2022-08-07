@@ -1,6 +1,7 @@
 var express = require("express");
 var { createWorker } = require("tesseract.js");
 var path = require("path");
+var fs = require("fs");
 
 const app = express();
 
@@ -14,6 +15,12 @@ app.use(
   })
 );
 
+// destination.txt will be created or overwritten by default.
+fs.copyFile("./eng.traineddata", "/tmp/eng.traineddata", (err) => {
+  if (err) throw err;
+  console.log("source.txt was copied to destination.txt");
+});
+
 app.use("/public", express.static(path.join(__dirname + "/public")));
 app.use(express.static(__dirname + "/"));
 app.get("/", (req, res) => {
@@ -26,7 +33,10 @@ app.get("/api", (req, res) => {
 });
 app.post("/api", (req, res) => {
   const worker = createWorker({
-    logger: (m) => console.log(m),
+    // logger: m => console.log(m)
+    langPath: "tmp",
+    cacheMethod: "none",
+    gzip: false,
   });
 
   (async () => {
