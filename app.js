@@ -1,5 +1,5 @@
-import express from "express";
-import { createWorker } from "tesseract.js";
+var express = require("express");
+var { createWorker } = require("tesseract.js");
 
 const app = express();
 
