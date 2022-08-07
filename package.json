@@ -2,5 +2,23 @@
   "dependencies": {
     "express": "^4.18.1",
     "tesseract.js": "^2.1.5"
-  }
+  },
+  "name": "node-ocr",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erorr-404-Aditya/node-ocr.git"
+  },
+  "author": "aditya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/erorr-404-Aditya/node-ocr/issues"
+  },
+  "homepage": "https://github.com/erorr-404-Aditya/node-ocr#readme",
+  "description": ""
 }
