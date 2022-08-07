@@ -15,12 +15,6 @@ app.use(
   })
 );
 
-// destination.txt will be created or overwritten by default.
-// fs.copyFile("./eng.traineddata", "/tmp/eng.traineddata", (err) => {
-//   if (err) throw err;
-//   console.log("source.txt was copied to destination.txt");
-// });
-
 app.use("/public", express.static(path.join(__dirname + "/public")));
 app.use(express.static(__dirname + "/"));
 app.get("/", (req, res) => {
@@ -51,10 +45,18 @@ app.post("/api", (req, res) => {
       }_${req.body.ques}.jpg`
     );
     var newtext;
-    if (!text.includes("Sol:")) {
-      newtext = text.replace("Answer:", "").trim();
+    if (!req.body.Q) {
+      if (req.body.onlyans) {
+        if (!text.includes("Sol:")) {
+          newtext = text.replace("Answer:", "").trim();
+        } else {
+          newtext = text.split("Sol:")[0].replace("Answer:", "").trim();
+        }
+      } else {
+        newtext = text;
+      }
     } else {
-      newtext = text.split("Sol:")[0].replace("Answer:", "").trim();
+      newtext = text;
     }
     res.send(newtext);
     await worker.terminate();
