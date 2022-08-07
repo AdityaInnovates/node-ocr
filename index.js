@@ -34,9 +34,9 @@ app.get("/api", (req, res) => {
 app.post("/api", (req, res) => {
   const worker = createWorker({
     // logger: m => console.log(m)
-    // langPath: "tmp",
-    // cacheMethod: "none",
-    // gzip: false,
+    langPath: "tmp",
+    cacheMethod: "none",
+    gzip: false,
   });
 
   (async () => {
