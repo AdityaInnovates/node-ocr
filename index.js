@@ -15,12 +15,15 @@ app.use(
 
 app.use("/public", express.static(path.join(__dirname + "/public")));
 app.use(express.static(__dirname + "/"));
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "./index.html"));
 });
 
 // api Routes
-app.use("/api", (req, res) => {
+app.post("/api", (req, res) => {
+  res.send("not allowed");
+});
+app.post("/api", (req, res) => {
   const worker = createWorker({
     logger: (m) => console.log(m),
   });
