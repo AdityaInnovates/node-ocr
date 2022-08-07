@@ -3,8 +3,6 @@ var { createWorker } = require("tesseract.js");
 
 const app = express();
 
-import path from "path";
-
 // for parsing json data
 app.use(express.json());
 
