@@ -37,28 +37,45 @@ app.post("/api", (req, res) => {
     await worker.load();
     await worker.loadLanguage("eng");
     await worker.initialize("eng");
-    const {
-      data: { text },
-    } = await worker.recognize(
-      `https://onlinetestseries.motion.ac.in/dashboard/img/testid-66665555137/${
-        req.body.Q ? "Question" : "Solution"
-      }_${req.body.ques}.jpg`
-    );
-    var newtext;
-    if (!req.body.Q) {
-      if (req.body.onlyans) {
-        if (!text.includes("Sol:")) {
-          newtext = text.replace("Answer:", "").trim();
+    if (req.body["motion-test"]) {
+      const {
+        data: { text },
+      } = await worker.recognize(
+        `https://onlinetestseries.motion.ac.in/dashboard/img/testid-66665555137/${
+          req.body.Q ? "Question" : "Solution"
+        }_${req.body.ques}.jpg`
+      );
+      var newtext;
+      if (!req.body.Q) {
+        if (req.body.onlyans) {
+          if (!text.includes("Sol:")) {
+            newtext = text.replace("Answer:", "").trim();
+          } else {
+            newtext = text.split("Sol:")[0].replace("Answer:", "").trim();
+          }
         } else {
-          newtext = text.split("Sol:")[0].replace("Answer:", "").trim();
+          newtext = text;
         }
       } else {
         newtext = text;
       }
+      res.send(newtext);
+    } else if (req.body.url) {
+      var expression =
+        /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+      var regex = new RegExp(expression);
+      if (req.body.url.match(regex)) {
+        const {
+          data: { text },
+        } = await worker.recognize(req.body.url);
+        res.status(202).send(text);
+      } else {
+        res.status(404).send("use url in url field.");
+      }
     } else {
-      newtext = text;
+      res.status(404).send("enter url");
     }
-    res.send(newtext);
+
     await worker.terminate();
   })();
 });
