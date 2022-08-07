@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
 });
 
 // api Routes
-app.post("/api", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("not allowed");
 });
 app.post("/api", (req, res) => {
