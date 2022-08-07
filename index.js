@@ -1,5 +1,6 @@
 var express = require("express");
 var { createWorker } = require("tesseract.js");
+var path = require("path");
 
 const app = express();
 
